@@ -17,7 +17,8 @@ public class Globals {
     public static boolean controlPanelIsPickedUp = false;
     public static boolean safeIsPickedUp = false;
     public static int count = 0;
-
+    public static int passedTubes = 10;
+    public static int best = 0;
 
 
 }

@@ -29,14 +29,13 @@ public class Password implements Screen {
     FitViewport viewport;
     OrthographicCamera camera;
     SpriteBatch batch;
-    Texture bgTexture, rightTexture, leftTexture, oneTexture, twoTexture, threeTexture;
+    Texture bgTexture, rightTexture, leftTexture, oneTexture, twoTexture, threeTexture, ruleTexture;
     Sprite leftSprite, rightSprite;
     int correct, current;
     int[] password = new int[3];
     Stage stage;
     BitmapFont font;
     Sound ordinarySound, correctSound;
-    //    boolean one, two, three = false;
     String nowDirection, userDirection;
 
     public Password(PointAndClick game) {
@@ -58,6 +57,7 @@ public class Password implements Screen {
         oneTexture = new Texture("textures/password_2.png");
         twoTexture = new Texture("textures/password_3.png");
         threeTexture = new Texture("textures/password_4.png");
+        ruleTexture = new Texture("textures/rule2.png");
 
 
         rightSprite = new Sprite(rightTexture);
@@ -113,6 +113,8 @@ public class Password implements Screen {
                 Vector3 input = new Vector3(x1, y1, 0);
                 camera.unproject(input);
                 if ((leftSprite.getBoundingRectangle().contains(input.x, input.y))) {
+                    ordinarySound.play(1.0f);
+
                     if (current - 1 < 1) {
                         current = 60;
                     } else {
@@ -120,6 +122,8 @@ public class Password implements Screen {
                     }
                     userDirection = "left";
                 } else if ((rightSprite.getBoundingRectangle().contains(input.x, input.y))) {
+                    ordinarySound.play(1.0f);
+
                     if (current + 1 >= 60) {
                         current = 1;
                     } else {
@@ -133,16 +137,12 @@ public class Password implements Screen {
                     if (Objects.equals(userDirection, nowDirection)) {
                         correct += 1;
                         correctSound.play(1.0f);
-                        System.out.println("one is true");
                     } else {
                         System.out.println("lll");
                         correct = 0;
                     }
                 }
-                else {
-                    ordinarySound.play(1.0f);
 
-                }
                 if (correct > 0) {
                     if (!(Objects.equals(userDirection, nowDirection))) {
                         correct = 0;
@@ -159,6 +159,7 @@ public class Password implements Screen {
             }
         }
         font.draw(batch, Integer.toString(current), (float) (Gdx.graphics.getWidth() * 0.26), (float) (Gdx.graphics.getHeight() / 2));
+        batch.draw(ruleTexture, ((float) Gdx.graphics.getWidth() / 2 - (float) ruleTexture.getWidth() /2), Gdx.graphics.getHeight()-ruleTexture.getHeight());
         batch.end();
     }
 

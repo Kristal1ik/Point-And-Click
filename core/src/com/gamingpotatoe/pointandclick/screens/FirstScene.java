@@ -51,6 +51,7 @@ public class FirstScene implements Screen {
     String string = "";
     boolean tryPick, tryPick2;
     Sound repairSound;
+    int fontSize;
 
     public FirstScene(final PointAndClick game, int n) throws IOException {
         this.game = game;
@@ -83,7 +84,7 @@ public class FirstScene implements Screen {
 
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮёЁ";
-        parameter.size = 40;
+        parameter.size = 25;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/pixel.ttf"));
         font = generator.generateFont(parameter);
         generator.dispose();
@@ -149,7 +150,6 @@ public class FirstScene implements Screen {
         batch.draw(rectTexture, 0, 0, Gdx.graphics.getWidth(), (int) (Gdx.graphics.getHeight() * 0.15));
 
 
-
         if (Gdx.input.justTouched()) {
             System.out.println(count);
 //            if (count == 3) {
@@ -173,7 +173,7 @@ public class FirstScene implements Screen {
                 if ((brokenBoardSprite.getBoundingRectangle().contains(input.x, input.y))) {
                     if (tapeIsPickedUp && !(boardIsPickedUp)) {
                         game.setScreen(new WiringGame(game));
-                        boardIsPickedUp = true;
+                        
                     }
                     if (!tapeIsPickedUp) {
                         tryPick = true;

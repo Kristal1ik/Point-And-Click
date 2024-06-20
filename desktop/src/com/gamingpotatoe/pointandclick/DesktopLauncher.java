@@ -10,7 +10,7 @@ public class DesktopLauncher {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
         config.setTitle("Point And Click");
-        config.setWindowedMode(Globals.SCR_WIDTH +100, Globals.SCR_HEIGHT + 100);
+        config.setWindowedMode(Globals.SCR_WIDTH, Globals.SCR_HEIGHT);
         new Lwjgl3Application(new PointAndClick(), config);
     }
 }

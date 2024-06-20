@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -44,7 +46,7 @@ public class WiringGame implements Screen {
     ShapeDrawer drawer;
     ArrayList<int[]> redCords;
     ArrayList<int[]> blueCords;
-    Texture bgTexture, redTexture, blueTexture;
+    Texture bgTexture, redTexture, blueTexture, ruleTexture;
     int x11, x12, y11, y12, x21, x22, y21, y22;
     boolean redStart, blueStart, redFinish, blueFinish, lasts = false;
 
@@ -54,6 +56,7 @@ public class WiringGame implements Screen {
     Skin skin;
     Dialog errorDialog, corrDialog;
     TextButton playButton;
+    BitmapFont font;
 
     public WiringGame(final PointAndClick game) {
         this.game = game;
@@ -66,6 +69,7 @@ public class WiringGame implements Screen {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 //        bgTexture = new Texture("textures/wiring_game_bg.jpg");
         bgTexture = new Texture("textures/wg_blur_bg.jpg");
+        ruleTexture = new Texture("textures/rule1.png");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         TextureRegion region = new TextureRegion(bgTexture);
         drawer = new ShapeDrawer(batch, region);
@@ -82,7 +86,7 @@ public class WiringGame implements Screen {
         redCords.add(cordsRed);
         // blue
         x21 = y21 = 200;
-        x22 = y22 = 700;
+        x22 = y22 = 600;
         int[] cordsBlue = new int[2];
         cordsBlue[0] = x21;
         cordsBlue[1] = y21;
@@ -157,6 +161,12 @@ public class WiringGame implements Screen {
         });
 
         table.add(playButton).expand().bottom().right().width(200).height(100);
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮёЁ";
+        parameter.size = 15;
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/pixel.ttf"));
+        font = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     @Override
@@ -171,6 +181,8 @@ public class WiringGame implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.draw(bgTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(ruleTexture, Gdx.graphics.getWidth() - ruleTexture.getWidth(), 0);
+
 
         // textures
         redTexture = new Texture("textures/red.png");
@@ -271,6 +283,7 @@ public class WiringGame implements Screen {
             drawer.line(blueCords.get(blueCords.size() - 1)[0] + ((float) radius / 2), blueCords.get(blueCords.size() - 1)[1] + ((float) radius / 2), blueSpriteFinish.getX() + ((float) radius / 2), blueSpriteFinish.getY() + ((float) radius / 2));
 
         }
+//        font.draw(batch, "В твоем корабле сломалась проводка\nНайди начало каждого провода и соедини его с соответствующим концом с помощью отрезков\nТолько следи, чтобы не было короткого замыкания (пересечения проводов разныз цветов))", (int)(Gdx.graphics.getWidth() * 0.01), (int)(Gdx.graphics.getHeight() * 0.1));
 
         batch.end();
         stage.act();

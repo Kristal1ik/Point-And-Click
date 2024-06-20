@@ -46,7 +46,6 @@ public class MainScreen implements Screen {
         stage.addActor(table);
         Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         TextButton playButton = new TextButton("PLAY", skin);
-
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
@@ -67,10 +66,18 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        batch.setProjectionMatrix(camera.combined);
         camera.update();
         batch.begin();
+        if (Gdx.input.justTouched()){
+            try {
+                game.setScreen(new FirstScene(game, 0));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
         batch.draw(bgTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.setProjectionMatrix(camera.combined);
         batch.end();
         stage.act();
         stage.draw();

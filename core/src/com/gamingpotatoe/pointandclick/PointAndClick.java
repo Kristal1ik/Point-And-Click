@@ -59,7 +59,7 @@ public class PointAndClick extends Game {
         mainScreen = new MainScreen(this);
         flappyRocket = new FlappyRocket(this);
         shape = new ShapeRenderer();
-        setScreen(flappyRocket);
+        setScreen(mainScreen);
 
     }
 
